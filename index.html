@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sport Brains</title>
+<meta content="Sport Brains" property="og:title"/>
+<meta content="Learn the essentials of popular sports in seconds" property="og:description"/>
+<meta content="assets/img_1200x630_461f25d2.png" property="og:image"/>
+<meta content="website" property="og:type"/>
+<link href="assets/img_32x32_5af24e16.png" rel="icon"/>
+<script src="assets/script_722d9f91.js"></script>
+<link href="assets/style_39699931.css" rel="stylesheet"/>
+<link href="assets/style_d1205e43.css" rel="stylesheet"/>
+<script src="assets/script_f23507c9.js"></script>
+<script src="assets/script_f1659923.js"></script>
+<!-- Font Awesome -->
+<link href="assets/style_7683db36.css" rel="stylesheet"/>
+<script crossorigin="" src="assets/script_4f47b7a9.js"></script>
+<style>
+            @font-face {
+                font-family: 'Font Awesome 6 Free';
+                font-path: '/chat/webfonts/fa-regular-400';
+                src: url('/chat/webfonts/fa-regular-400.woff2') format('woff2'),
+                    url('/chat/webfonts/fa-regular-400.ttf') format('truetype');
+            }
+
+            @font-face {
+                font-family: 'Font Awesome 6 Free';
+                font-path: '/chat/webfonts/fa-solid-900';
+                src: url('/chat/webfonts/fa-solid-900.woff2') format('woff2'),
+                    url('/chat/webfonts/fa-solid-900.ttf') format('truetype');
+            }
+
+            @font-face {
+                font-family: 'Font Awesome 6 Brands';
+                font-path: '/chat/webfonts/fa-brands-400';
+                src: url('/chat/webfonts/fa-brands-400.woff2') format('woff2'),
+                    url('/chat/webfonts/fa-brands-400.ttf') format('truetype');
+            }
+        
+            body {
+                font-family: 'Comic Sans MS', 'Chalkboard SE', cursive;
+                background-color: #f8e8d4;
+                overflow-x: hidden;
+                color: #333;
+            }
+        
+            .comic-border {
+                border: 3px solid #000;
+                box-shadow: 5px 5px 0px #000;
+            }
+        
+            .comic-header {
+                text-shadow: 3px 3px 0px #000;
+                -webkit-text-stroke: 1px #000;
+            }
+        
+            .sport-card {
+                transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+                backface-visibility: hidden;
+                will-change: transform, opacity;
+                border: 3px solid #000;
+                box-shadow: 5px 5px 0px #000;
+            }
+        
+            .sport-card:hover {
+                transform: translateY(-5px) rotate(1deg);
+            }
+        
+            .expanded-card {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 50;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: rgba(0, 0, 0, 0.7);
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.3s ease;
+            }
+        
+            .expanded-card.active {
+                opacity: 1;
+                pointer-events: auto;
+            }
+        
+            .expanded-content {
+                max-width: 90%;
+                width: 600px;
+                max-height: 90vh;
+                transform: scale(0.9);
+                opacity: 0;
+                transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+                border: 4px solid #000;
+                box-shadow: 8px 8px 0px #000;
+            }
+        
+            .expanded-card.active .expanded-content {
+                transform: scale(1);
+                opacity: 1;
+            }
+        
+            .icon-circle {
+                transition: all 0.3s ease;
+                border: 2px solid #000;
+            }
+        
+            .sport-card:hover .icon-circle {
+                transform: scale(1.1) rotate(-5deg);
+            }
+        
+            .comic-bg {
+                background-color: #f8e8d4;
+                background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23dbb284' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+            }
+        
+            .custom-scrollbar::-webkit-scrollbar {
+                width: 8px;
+            }
+        
+            .custom-scrollbar::-webkit-scrollbar-track {
+                background: #f8e8d4;
+                border: 1px solid #000;
+            }
+        
+            .custom-scrollbar::-webkit-scrollbar-thumb {
+                background: #e5a45d;
+                border: 1px solid #000;
+            }
+        
+            .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+                background: #d08c3c;
+            }
+        
+            @keyframes wiggle {
+                0%, 100% { transform: rotate(-1deg); }
+                50% { transform: rotate(1deg); }
+            }
+        
+            .wiggle {
+                animation: wiggle 1s ease-in-out infinite;
+            }
+        
+            .comic-btn {
+                background-color: #f8d568;
+                border: 2px solid #000;
+                box-shadow: 3px 3px 0px #000;
+                transition: all 0.2s ease;
+            }
+        
+            .comic-btn:hover {
+                transform: translate(-2px, -2px);
+                box-shadow: 5px 5px 0px #000;
+            }
+        
+            .comic-btn:active {
+                transform: translate(0px, 0px);
+                box-shadow: 1px 1px 0px #000;
+            }
+        
+            .speech-bubble {
+                position: relative;
+                background: #fff;
+                border: 3px solid #000;
+                border-radius: 10px;
+                padding: 15px;
+            }
+        
+            .sport-icon {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                padding: 10%;
+            }
+        </style>
+<script>
+            window.load_data_from_csv = (filename) => {
+                // Implementation needed when code is downloaded
+            };
+
+            window.save_data_to_csv = (filename, data) => {
+                // Implementation needed when code is downloaded
+            };
+
+            window.call_llm = (system_prompt, user_messages, json_fields) => {
+                // Implementation needed when code is downloaded
+            };
+        </script></head>
+<body class="comic-bg min-h-screen">
+<div class="relative overflow-hidden">
+<!-- Background decorative elements -->
+<div class="absolute top-0 left-0 w-full h-64 bg-yellow-200 transform -skew-y-6 -translate-y-24 z-0 border-b-4 border-black"></div>
+<div class="container mx-auto px-4 py-12 relative z-10">
+<header class="text-center mb-16" data-aos="fade-down" data-aos-duration="1000">
+<div class="inline-block mb-4">
+<div class="w-24 h-24 rounded-full bg-yellow-300 flex items-center justify-center comic-border mx-auto wiggle">
+<i class="fas fa-brain text-red-600 text-4xl"></i>
+</div>
+</div>
+<h1 class="text-5xl md:text-6xl font-bold text-red-600 mb-4 comic-header">Sport Brains</h1>
+<p class="text-xl text-gray-800 max-w-2xl mx-auto font-bold italic">Quick, essential guides to popular sports for beginners!</p>
+<div class="mt-6 speech-bubble max-w-md mx-auto">
+<p class="font-bold">Click on any sport card to learn more about the game!</p>
+</div>
+</header>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10" id="sports-container">
+<!-- Loading state -->
+<div class="col-span-full flex justify-center items-center py-20">
+<div class="flex flex-col items-center">
+<div class="w-16 h-16 border-4 border-red-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+<p class="text-red-600 font-bold text-xl">Loading sports data...</p>
+</div>
+</div>
+</div>
+<!-- Expanded card view (initially hidden) -->
+<div class="expanded-card" id="expandedCardView">
+<div class="expanded-content bg-yellow-100 rounded-xl overflow-hidden" id="expandedContent">
+<!-- Content will be dynamically inserted here -->
+</div>
+</div>
+</div>
+</div>
+<footer class="bg-yellow-300 border-t-4 border-black py-8 mt-12 relative z-10">
+<div class="container mx-auto px-4 text-center">
+<div class="flex justify-center items-center">
+<div class="w-12 h-12 rounded-full bg-red-500 flex items-center justify-center comic-border mr-3">
+<i class="fas fa-brain text-white text-lg"></i>
+</div>
+<div>
+<p class="text-xl font-bold">© 2025 Sport Brains</p>
+<p class="text-gray-800 italic">Designed for beginners to understand sports quickly!</p>
+</div>
+</div>
+</div>
+</footer>
+<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Initialize AOS
+                AOS.init({
+                    duration: 800,
+                    easing: 'ease-out-cubic',
+                    once: true
+                });
+            
+                // Load sports data
+                loadSportsData();
+            
+                // Setup expanded card view close functionality
+                const expandedCardView = document.getElementById('expandedCardView');
+                expandedCardView.addEventListener('click', function(event) {
+                    if (event.target === expandedCardView) {
+                        closeExpandedCard();
+                    }
+                });
+            
+                // Handle escape key to close expanded card
+                document.addEventListener('keydown', function(event) {
+                    if (event.key === 'Escape') {
+                        closeExpandedCard();
+                    }
+                });
+            });
+        
+            async function loadSportsData() {
+                try {
+                    const sportsData = await window.call_llm(
+                        `You are a sports expert with a 1970s comic book style. Provide detailed information about the following sports: Rugby, American Football, Baseball, Pickleball, Netball, and Cricket. 
+                        For each sport, provide:
+                        1. A short description (1-2 sentences) written in a fun, slightly exaggerated 70s comic style
+                        2. The main objective of the game (1-2 sentences) in simple terms
+                        3. 5 key rules to be aware of (bullet points) written in a casual, friendly way
+                        4. A color theme (primary color in hex code) - use only pastel or vintage colors, NO PURPLE SHADES
+                        5. A short tagline (5-7 words) that sounds like it's from a 70s comic
+                    
+                        Format your response as a JSON array with objects for each sport.`,
+                        [{"role": "user", "content": "Please provide the sports information as requested."}],
+                        [{"sports": "Array of sport objects with name, description, objective, rules, color, and tagline fields"}]
+                    );
+                
+                    renderSportsCards(sportsData.sports);
+                } catch (error) {
+                    console.error("Error loading sports data:", error);
+                    // Fallback to static data if API call fails
+                    renderSportsCards(getFallbackSportsData());
+                }
+            }
+        
+            function getFallbackSportsData() {
+                return [
+                    {
+                        name: "Rugby",
+                        description: "The wildest game on turf where tough-as-nails players battle for an oval ball! No pads, no helmets, just raw courage and determination!",
+                        objective: "Score points by carrying the ball across the goal line or kicking it through the uprights while the other team tries to tackle you into next week!",
+                        rules: [
+                            "You can only pass the ball BACKWARDS or SIDEWAYS, never forward — crazy but true!",
+                            "When tackled, you gotta release the ball pronto or face the referee's wrath!",
+                            "Score a 'try' (5 points) by touching the ball down in the opponent's end zone — it's DYNAMITE!",
+                            "After a try, kick the ball through the posts for extra points in a 'conversion' — if you've got the skills!",
+                            "Scrums look like human bulldozers colliding — players lock arms and push against each other for possession!"
+                        ],
+                        color: "#e5a45d",
+                        tagline: "Rough, Tough, and Totally WILD!"
+                    },
+                    {
+                        name: "American Football",
+                        description: "The ultimate gladiator sport where armored warriors battle for territory on the gridiron! It's like chess with collisions!",
+                        objective: "March down the field and score touchdowns by any means necessary while the defense tries to stop you dead in your tracks!",
+                        rules: [
+                            "You get FOUR chances (downs) to move the ball 10 yards — fail and you surrender the ball!",
+                            "Crossing the goal line scores a TOUCHDOWN worth a whopping 6 points — KAPOW!",
+                            "After a touchdown, you can kick for 1 extra point or go for 2 with another play — decisions, decisions!",
+                            "You can throw the ball forward ONCE per play, but only from behind the line of scrimmage!",
+                            "If you're stuck in a tough spot, you can PUNT the ball away on 4th down — live to fight another day!"
+                        ],
+                        color: "#f8d568",
+                        tagline: "Gridiron Glory or Total Defeat!"
+                    },
+                    {
+                        name: "Baseball",
+                        description: "America's timeless pastime where heroes wield wooden bats and pitchers throw mind-bending curves! A game of strategy, skill, and sudden action!",
+                        objective: "Score more runs than the other team by hitting the ball and running around the bases without getting tagged out!",
+                        rules: [
+                            "Three strikes and you're OUT! But four balls and you walk to first base for FREE!",
+                            "Hit the ball over the fence and you get a HOME RUN — trot around all the bases while the crowd goes WILD!",
+                            "Each team gets three outs per inning before switching between batting and fielding — fair's fair!",
+                            "Runners must touch ALL bases in order or they can be tagged out — no shortcuts allowed!",
+                            "Stealing bases is totally legal — if you're brave enough to risk it while the pitcher isn't looking!"
+                        ],
+                        color: "#7ec8e3",
+                        tagline: "Swing for the Fences, Champ!"
+                    },
+                    {
+                        name: "Pickleball",
+                        description: "The groovy new paddle sport that's sweeping the nation! It's like tennis and ping-pong had an AWESOME baby!",
+                        objective: "Score points by hitting the plastic ball over the net so your opponent can't return it — but watch out for the tricky rules!",
+                        rules: [
+                            "The serve MUST be underhand and diagonal — no power serves allowed in this hip game!",
+                            "After the serve, the ball must bounce ONCE on each side before volleys are allowed — it's the two-bounce rule, man!",
+                            "Stay out of the 'kitchen' (the area near the net) unless the ball bounces there first — it's a NO-VOLLEY ZONE!",
+                            "Only the serving team can score points — tough break for the receivers!",
+                            "Games go to 11 points but you gotta win by 2 — the tension can be FAR OUT!"
+                        ],
+                        color: "#f4a688",
+                        tagline: "The Coolest Game You Never Heard Of!"
+                    },
+                    {
+                        name: "Netball",
+                        description: "The fast-paced court game where high-flying players pass with lightning speed! It's basketball's cool cousin with its own radical rules!",
+                        objective: "Score goals by shooting the ball through the hoop while staying in your designated zone — teamwork makes the dream work!",
+                        rules: [
+                            "You can't run with the ball — catch it, stop, and pass within 3 seconds or it's a turnover!",
+                            "Each player has a specific position that limits where they can go on court — know your zone or face the consequences!",
+                            "No backboard to bank shots off — all goals must go STRAIGHT through the ring!",
+                            "Defenders must stay 3 feet away from a player with the ball — no crowding allowed!",
+                            "Only Goal Attack and Goal Shooter can score — the rest are just supporting cast in this drama!"
+                        ],
+                        color: "#98c1d9",
+                        tagline: "Fast Passes and Sky-High Action!"
+                    },
+                    {
+                        name: "Cricket",
+                        description: "The gentleman's game with a wild side! Batsmen defend wooden stumps while facing rock-hard balls hurled at blistering speeds!",
+                        objective: "Score more runs than the opposing team by hitting the ball and running between wickets without getting OUT in a multitude of ways!",
+                        rules: [
+                            "Batsmen protect their wicket (three wooden stumps) at all costs — if the ball hits it, you're OUTTA THERE!",
+                            "Run between the wickets after hitting the ball to score runs — each complete run is ONE point on the scoreboard!",
+                            "Hit the ball to the boundary for FOUR runs, or clear it completely for a massive SIX — no running required!",
+                            "Bowlers must keep their arm straight when delivering the ball — no bending allowed in this strict game!",
+                            "Matches can last from a few hours to FIVE DAYS — bring snacks and maybe a sleeping bag!"
+                        ],
+                        color: "#a7c957",
+                        tagline: "Wickets, Runs, and Epic Battles!"
+                    }
+                ];
+            }
+        
+            function renderSportsCards(sportsData) {
+                const container = document.getElementById('sports-container');
+                container.innerHTML = '';
+            
+                sportsData.forEach((sport, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'sport-card bg-yellow-100 rounded-xl overflow-hidden transform transition-all cursor-pointer hover:bg-yellow-50 rotate-1';
+                    card.setAttribute('data-aos', 'fade-up');
+                    card.setAttribute('data-aos-delay', (index * 100).toString());
+                    card.setAttribute('data-sport', JSON.stringify(sport));
+                
+                    // Generate comic style for card
+                    const sportColor = sport.color;
+                
+                    // Generate sport icon URL
+                    const sportIconUrl = getSportIconUrl(sport.name);
+                
+                    card.innerHTML = `
+                        <div class="h-40 relative" style="background-color: ${sportColor};">
+                            <div class="absolute top-0 right-0 p-4">
+                                <div class="text-black font-bold text-lg italic" style="transform: rotate(10deg);">${sport.tagline}</div>
+                            </div>
+                            <div class="h-full w-full flex items-center justify-center relative">
+                                <div class="icon-circle w-24 h-24 rounded-full bg-white flex items-center justify-center">
+                                    <img src="${sportIconUrl}" alt="${sport.name}" class="sport-icon">
+                                </div>
+                            </div>
+                            <div class="absolute -bottom-3 left-0 right-0 flex justify-center">
+                                <div class="bg-yellow-300 px-6 py-1 rounded-full border-2 border-black font-bold text-xl">
+                                    ${sport.name}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6 pt-8">
+                            <p class="text-center font-bold italic">Click to learn the rules!</p>
+                        </div>
+                    `;
+                
+                    card.addEventListener('click', function() {
+                        showExpandedCard(sport);
+                    });
+                
+                    container.appendChild(card);
+                });
+            
+                // Save data to CSV for user's record
+                const csvData = sportsData.map(sport => {
+                    return {
+                        name: sport.name,
+                        description: sport.description,
+                        objective: sport.objective,
+                        rules: sport.rules.join(' | ')
+                    };
+                });
+            
+                window.save_data_to_csv(csvData);
+            }
+        
+            // Helper function to get sport icon URL
+            function getSportIconUrl(sportName) {
+                const sportIcons = {
+                    "Rugby": "https://cdn.simulationtheory.ai/gasset/?asset=img&prompt=cartoon rugby ball with vintage 70s style&w=128&h=128&transparent=true&style=pixel_art",
+                    "American Football": "https://cdn.simulationtheory.ai/gasset/?asset=img&prompt=cartoon american football helmet with vintage 70s style&w=128&h=128&transparent=true&style=pixel_art",
+                    "Baseball": "https://cdn.simulationtheory.ai/gasset/?asset=img&prompt=cartoon baseball and bat with vintage 70s style&w=128&h=128&transparent=true&style=pixel_art",
+                    "Pickleball": "https://cdn.simulationtheory.ai/gasset/?asset=img&prompt=cartoon pickleball paddle and ball with vintage 70s style&w=128&h=128&transparent=true&style=pixel_art",
+                    "Netball": "https://cdn.simulationtheory.ai/gasset/?asset=img&prompt=cartoon netball and hoop with vintage 70s style&w=128&h=128&transparent=true&style=pixel_art",
+                    "Cricket": "https://cdn.simulationtheory.ai/gasset/?asset=img&prompt=cartoon cricket bat and ball with vintage 70s style&w=128&h=128&transparent=true&style=pixel_art"
+                };
+            
+                return sportIcons[sportName] || "https://cdn.simulationtheory.ai/gasset/?asset=img&prompt=cartoon sports equipment with vintage 70s style&w=128&h=128&transparent=true&style=pixel_art";
+            }
+        
+            function showExpandedCard(sport) {
+                const expandedCardView = document.getElementById('expandedCardView');
+                const expandedContent = document.getElementById('expandedContent');
+            
+                // Generate comic style for expanded card
+                const sportColor = sport.color;
+            
+                // Generate sport icon URL
+                const sportIconUrl = getSportIconUrl(sport.name);
+            
+                expandedContent.innerHTML = `
+                    <div>
+                        <div class="h-48 relative" style="background-color: ${sportColor};">
+                            <div class="absolute top-4 right-4">
+                                <button id="closeExpandedCard" class="comic-btn w-12 h-12 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-times text-2xl"></i>
+                                </button>
+                            </div>
+                            <div class="h-full w-full flex items-center justify-center">
+                                <div class="text-center">
+                                    <div class="icon-circle w-28 h-28 rounded-full bg-white flex items-center justify-center mx-auto mb-2">
+                                        <img src="${sportIconUrl}" alt="${sport.name}" class="sport-icon">
+                                    </div>
+                                    <div class="bg-yellow-300 px-8 py-2 rounded-full border-2 border-black font-bold text-2xl inline-block">
+                                        ${sport.name}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-8 custom-scrollbar" style="max-height: 60vh; overflow-y: auto;">
+                            <div class="mb-6">
+                                <div class="speech-bubble mb-8">
+                                    <p class="text-lg font-bold italic">${sport.description}</p>
+                                </div>
+                            
+                                <div class="bg-white rounded-xl p-6 mb-6 comic-border">
+                                    <h3 class="text-xl font-bold mb-3 flex items-center">
+                                        <span class="w-8 h-8 rounded-full bg-yellow-300 flex items-center justify-center mr-3 border-2 border-black">
+                                            <i class="fas fa-bullseye"></i>
+                                        </span>
+                                        OBJECTIVE
+                                    </h3>
+                                    <p class="text-lg">${sport.objective}</p>
+                                </div>
+                            
+                                <div class="bg-white rounded-xl p-6 comic-border">
+                                    <h3 class="text-xl font-bold mb-3 flex items-center">
+                                        <span class="w-8 h-8 rounded-full bg-yellow-300 flex items-center justify-center mr-3 border-2 border-black">
+                                            <i class="fas fa-list"></i>
+                                        </span>
+                                        KEY RULES
+                                    </h3>
+                                    <ul class="space-y-4">
+                                        ${sport.rules.map((rule, i) => `
+                                            <li class="flex">
+                                                <span class="w-6 h-6 rounded-full bg-yellow-300 flex items-center justify-center mr-3 border-2 border-black flex-shrink-0 mt-1">
+                                                    ${i + 1}
+                                                </span>
+                                                <span class="text-lg">${rule}</span>
+                                            </li>
+                                        `).join('')}
+                                    </ul>
+                                </div>
+                            
+                                <div class="text-center mt-8">
+                                    <button id="closeExpandedCardBtn" class="comic-btn px-8 py-3 rounded-xl font-bold text-lg">
+                                        GOT IT!
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            
+                // Add event listeners to close buttons
+                setTimeout(() => {
+                    document.getElementById('closeExpandedCard').addEventListener('click', closeExpandedCard);
+                    document.getElementById('closeExpandedCardBtn').addEventListener('click', closeExpandedCard);
+                }, 0);
+            
+                // Show expanded card with animation
+                expandedCardView.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling behind modal
+            }
+        
+            function closeExpandedCard() {
+                const expandedCardView = document.getElementById('expandedCardView');
+                expandedCardView.classList.remove('active');
+                document.body.style.overflow = ''; // Restore scrolling
+            }
+        </script>
+</body>
+</html>
